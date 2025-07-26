@@ -1,26 +1,23 @@
-import * as fs from 'fs';
-import * as path from 'path';
+import { Iniciadatabase } from './service/database';
+import { IniciaAdd } from './service/add';
+import { IniciaRemove } from './service/remove';
+import { IniciaAValue } from './controller/average_value';
+import { IniciaAWeight } from './controller/average_weight';
+import { IniciaList } from './controller/list';
+import { IniciaQuantItens } from './controller/quant_itens';
+import { IniciaQuantiProduc } from './controller/quant_prod';
+import { IniciaValue } from './controller/value';
+import { IniciaWeight } from './controller/weight';
 
-// Caminho da pasta "dados"
-const pastaDados = path.join(process.cwd(), 'dados');
 
-// Nome do arquivo CSV
-const nomeArquivo = 'produtos.csv';
-const caminhoCSV = path.join(pastaDados, nomeArquivo);
+Iniciadatabase();
+IniciaAdd();
+IniciaRemove();
 
-// Cabeçalhos do CSV
-const cabecalhos = ['nome', 'peso', 'valor', 'quantidade'];
-
-// Verifica se a pasta "dados" existe. Se não, cria.
-if (!fs.existsSync(pastaDados)) {
-  fs.mkdirSync(pastaDados);
-}
-
-// Verifica se o arquivo CSV existe
-if (!fs.existsSync(caminhoCSV)) {
-  const conteudoCSV = cabecalhos.join(',') + '\n';
-  fs.writeFileSync(caminhoCSV, conteudoCSV, 'utf8');
-  console.log(`Arquivo CSV criado em: ${caminhoCSV}`);
-} else {
-  console.log(`Arquivo CSV já existe em: ${caminhoCSV}`);
-}
+IniciaAValue();
+IniciaAWeight();
+IniciaList();
+IniciaQuantItens();
+IniciaQuantiProduc();
+IniciaValue();
+IniciaWeight();

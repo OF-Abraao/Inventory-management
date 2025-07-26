@@ -1,57 +1,22 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || (function () {
-    var ownKeys = function(o) {
-        ownKeys = Object.getOwnPropertyNames || function (o) {
-            var ar = [];
-            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
-            return ar;
-        };
-        return ownKeys(o);
-    };
-    return function (mod) {
-        if (mod && mod.__esModule) return mod;
-        var result = {};
-        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
-        __setModuleDefault(result, mod);
-        return result;
-    };
-})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const fs = __importStar(require("fs"));
-const path = __importStar(require("path"));
-// Caminho da pasta "dados"
-const pastaDados = path.join(process.cwd(), 'dados');
-// Nome do arquivo CSV
-const nomeArquivo = 'produtos.csv';
-const caminhoCSV = path.join(pastaDados, nomeArquivo);
-// Cabeçalhos do CSV
-const cabecalhos = ['nome', 'peso', 'valor', 'quantidade'];
-// Verifica se a pasta "dados" existe. Se não, cria.
-if (!fs.existsSync(pastaDados)) {
-    fs.mkdirSync(pastaDados);
-}
-// Verifica se o arquivo CSV existe
-if (!fs.existsSync(caminhoCSV)) {
-    const conteudoCSV = cabecalhos.join(',') + '\n';
-    fs.writeFileSync(caminhoCSV, conteudoCSV, 'utf8');
-    console.log(`Arquivo CSV criado em: ${caminhoCSV}`);
-}
-else {
-    console.log(`Arquivo CSV já existe em: ${caminhoCSV}`);
-}
+const database_1 = require("./service/database");
+const add_1 = require("./service/add");
+const remove_1 = require("./service/remove");
+const average_value_1 = require("./controller/average_value");
+const average_weight_1 = require("./controller/average_weight");
+const list_1 = require("./controller/list");
+const quant_itens_1 = require("./controller/quant_itens");
+const quant_prod_1 = require("./controller/quant_prod");
+const value_1 = require("./controller/value");
+const weight_1 = require("./controller/weight");
+(0, database_1.Iniciadatabase)();
+(0, add_1.IniciaAdd)();
+(0, remove_1.IniciaRemove)();
+(0, average_value_1.IniciaAValue)();
+(0, average_weight_1.IniciaAWeight)();
+(0, list_1.IniciaList)();
+(0, quant_itens_1.IniciaQuantItens)();
+(0, quant_prod_1.IniciaQuantiProduc)();
+(0, value_1.IniciaValue)();
+(0, weight_1.IniciaWeight)();
