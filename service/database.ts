@@ -14,7 +14,7 @@ export function Iniciadatabase() {
   if (!fs.existsSync(caminhoCSV)) {
     const conteudo = cabecalhos.join(',') + '\n';
     fs.writeFileSync(caminhoCSV, conteudo, 'utf8');
-    console.log(`CSV criado em: ${caminhoCSV}`);
+    console.log(`Criado em: ${caminhoCSV}`);
   } else {
     console.log(`CSV já existe: ${caminhoCSV}`);
   }
