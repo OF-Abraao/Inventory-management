@@ -1,8 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-// Função que calcula a média e retorna o valor
-function calcularMediaValor(): number | null {
+function GgIniciaValue(): number | null {
   const caminho = path.join(process.cwd(), 'dados', 'produtos.csv');
 
   if (!fs.existsSync(caminho)) {
@@ -19,25 +18,27 @@ function calcularMediaValor(): number | null {
 
   for (const linha of dados) {
     const colunas = linha.split(',');
+    const valor = parseFloat(colunas[2]);
 
-    const valor = parseFloat(colunas[2]); // coluna "valor"
     if (!isNaN(valor)) {
       soma += valor;
       contador++;
     }
   }
 
-  if (contador === 0) return null;
-  return soma / contador;
+  if (contador === 0) {
+    return null;
+  }
+
+  return soma; 
 }
 
-// Função que usa a anterior e imprime o resultado
-export function IniciaAValue() {
-  const media = calcularMediaValor();
+export function IniciaValue() {
+  const total = GgIniciaValue();
 
-  if (media === null) {
-    console.log('Nenhum valor encontrado para calcular a média.');
+  if (total === null) {
+    console.log('Nenhum valor encontrado para calcular a soma.');
   } else {
-    console.log(`Média dos valores dos produtos: ${media.toFixed(2)}`);
+    console.log(`A soma total dos valores é: R$ ${total.toFixed(2)}`);
   }
 }

@@ -1,8 +1,8 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-// Função que calcula a média e retorna o valor
-function calcularMediaPeso(): number | null {
+// Função retorna o peso total
+function GgIniciaWeight(): number | null {
   const caminho = path.join(process.cwd(), 'dados', 'produtos.csv');
 
   if (!fs.existsSync(caminho)) {
@@ -15,29 +15,27 @@ function calcularMediaPeso(): number | null {
   const dados = linhas.slice(1); // remove cabeçalho
 
   let soma = 0;
-  let contador = 0;
 
   for (const linha of dados) {
     const colunas = linha.split(',');
 
-    const peso = parseFloat(colunas[1]); // coluna "valor"
+    const peso = parseFloat(colunas[1]); // coluna "peso"
     if (!isNaN(peso)) {
       soma += peso;
-      contador++;
     }
   }
 
-  if (contador === 0) return null;
-  return soma / contador;
+  if (soma === 0) return 0;
+  return soma; 
 }
 
 // Função que usa a anterior e imprime o resultado
-export function IniciaAWeight() {
-  const media = calcularMediaPeso();
+export function IniciaWeight() {
+  const valueTotal = GgIniciaWeight();
 
-  if (media === null) {
-    console.log('Nenhum valor encontrado para calcular a média.');
+  if (valueTotal === null) {
+    console.log('A soma total dos valores é 0.');
   } else {
-    console.log(`Média dos valores dos produtos: ${media.toFixed(2)}`);
+    console.log(`A soma total dos valores é: ${valueTotal.toFixed(2)}kg`);
   }
 }
