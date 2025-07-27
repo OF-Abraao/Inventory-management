@@ -19,16 +19,17 @@ Este é um sistema simples de gerenciamento de estoque feito em **Node.js** com 
 ## Como executar
 
 1. Clone o repositório:
-    git clone https://github.com/OF-Abraao/Inventory-management
+    git clone https://github.com/OF-Abraao/Inventory-management 
     cd Inventory-management
 
-2. Instale as dependências:
+2. Instale as dependências: 
 npm install
 
-3. Compile o código TypeScript:
+3. Compile o código TypeScript: 
 npx tsc
 
-4. node dist/index.js
+4. Execute o sistema: 
+node dist/index.js
 
 
  
