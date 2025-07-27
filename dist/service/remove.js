@@ -34,16 +34,19 @@ var __importStar = (this && this.__importStar) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.IniciaRemove = IniciaRemove;
-const fs = __importStar(require("fs"));
+const fs = __importStar(require("fs/promises"));
 const path = __importStar(require("path"));
 const readline = __importStar(require("readline-sync"));
-function IniciaRemove() {
+async function IniciaRemove() {
     const caminho = path.join(process.cwd(), 'dados', 'produtos.csv');
-    if (!fs.existsSync(caminho)) {
+    let conteudo;
+    try {
+        conteudo = await fs.readFile(caminho, 'utf8');
+    }
+    catch (err) {
         console.log('Arquivo CSV não encontrado.');
         return null;
     }
-    const conteudo = fs.readFileSync(caminho, 'utf8');
     const linhas = conteudo.trim().split('\n');
     const dados = linhas.slice(1); // remove cabeçalho
     const nomeInput = readline.question('Nome do item para remover: ').trim().toLowerCase();
@@ -70,6 +73,7 @@ function IniciaRemove() {
                 novasLinhas.push(linhas[i]);
             }
         }
-        fs.writeFileSync(caminho, novasLinhas.join('\n') + '\n', 'utf8');
+        await fs.writeFile(caminho, novasLinhas.join('\n') + '\n', 'utf8');
+        console.log(`Item "${nomeInput}" removido com sucesso!`);
     }
 }
