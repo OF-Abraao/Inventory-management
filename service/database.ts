@@ -1,4 +1,4 @@
-import * as fs from 'fs';
+import * as fs from 'fs/promises';
 import * as path from 'path';
 
 const pastaDados = path.join(process.cwd(), 'dados');
@@ -6,16 +6,20 @@ const nomeArquivo = 'produtos.csv';
 const caminhoCSV = path.join(pastaDados, nomeArquivo);
 const cabecalhos = ['nome', 'peso', 'valor', 'quantidade'];
 
-export function Iniciadatabase() {
-  if (!fs.existsSync(pastaDados)) {
-    fs.mkdirSync(pastaDados);
-  }
+export async function Iniciadatabase() {
+  try {
+    await fs.mkdir(pastaDados, { recursive: true });
 
-  if (!fs.existsSync(caminhoCSV)) {
-    const conteudo = cabecalhos.join(',') + '\n';
-    fs.writeFileSync(caminhoCSV, conteudo, 'utf8');
-    console.log(`Criado em: ${caminhoCSV}`);
-  } else {
-    console.log(`CSV já existe: ${caminhoCSV}`);
+    try {
+      await fs.access(caminhoCSV);
+      console.log(`CSV já existe: ${caminhoCSV}`);
+    } catch {
+      const conteudo = cabecalhos.join(',') + '\n';
+      await fs.writeFile(caminhoCSV, conteudo, 'utf8');
+      console.log(`Criado em: ${caminhoCSV}`);
+    }
+
+  } catch (err) {
+    console.error('Erro ao criar diretório ou arquivo:', err);
   }
 }

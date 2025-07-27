@@ -1,16 +1,19 @@
-import * as fs from 'fs';
+import * as fs from 'fs/promises';
 import * as path from 'path';
 import * as readline from 'readline-sync';
 
-export function IniciaRemove() {
+export async function IniciaRemove() {
   const caminho = path.join(process.cwd(), 'dados', 'produtos.csv');
 
-  if (!fs.existsSync(caminho)) {
+  let conteudo;
+
+  try {
+    conteudo = await fs.readFile(caminho, 'utf8');
+  } catch (err) {
     console.log('Arquivo CSV não encontrado.');
     return null;
   }
 
-  const conteudo = fs.readFileSync(caminho, 'utf8');
   const linhas = conteudo.trim().split('\n');
   const dados = linhas.slice(1); // remove cabeçalho
 
@@ -40,6 +43,7 @@ export function IniciaRemove() {
         novasLinhas.push(linhas[i]);
       }
     }  
-    fs.writeFileSync(caminho, novasLinhas.join('\n') + '\n', 'utf8');
+    await fs.writeFile(caminho, novasLinhas.join('\n') + '\n', 'utf8');
+    console.log(`Item "${nomeInput}" removido com sucesso!`);
   }
 }

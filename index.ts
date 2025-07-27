@@ -14,7 +14,7 @@ import * as readline from 'readline-sync';
 async function main() {
   let executando = true; 
 
-  Iniciadatabase();
+  await Iniciadatabase();
   while (executando){
     const opcao = readline.questionInt(
       "\nQual funcionalidade deseja executar?\n" +

@@ -1,16 +1,18 @@
-import * as fs from 'fs';
+import * as fs from 'fs/promises';
 import * as path from 'path';
 import * as readline from 'readline-sync';
 
-export function IniciaAdd() {
+export async function IniciaAdd() {
   const caminho = path.join(process.cwd(), 'dados', 'produtos.csv');
 
-  if (!fs.existsSync(caminho)) {
+  let conteudo;
+  try {
+    conteudo = await fs.readFile(caminho, 'utf8');
+  } catch (err) {
     console.log('Arquivo CSV não encontrado.');
     return null;
   }
 
-  const conteudo = fs.readFileSync(caminho, 'utf8');
   const linhas = conteudo.trim().split('\n');
   const dados = linhas.slice(1); // remove cabeçalho
 
@@ -32,10 +34,10 @@ export function IniciaAdd() {
     return;
   } else {
     const peso = readline.questionFloat('Peso (em kg): ');
-    const valor = readline.questionFloat('Valor: ');
+    const valor = readline.questionFloat('Valor (em R$): ');
     const quantidade = readline.questionInt('Quantidade: ');
     const novaLinha = `\n${nomeInput},${peso},${valor},${quantidade}`;
-    fs.appendFileSync(caminho, novaLinha, 'utf8');
+    await fs.appendFile(caminho, novaLinha, 'utf8');
     console.log(`Item "${nomeInput}" adicionado com sucesso!`);
   }
 }
