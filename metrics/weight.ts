@@ -1,16 +1,19 @@
-import * as fs from 'fs';
+import { promises as fs } from 'fs';
 import * as path from 'path';
 
 // Função retorna o peso total
-function GgIniciaWeight(): number | null {
+async function GgIniciaWeight(): Promise <number | null> {
   const caminho = path.join(process.cwd(), 'dados', 'produtos.csv');
 
-  if (!fs.existsSync(caminho)) {
+  try{
+    await fs.access(caminho);
+  } 
+  catch{
     console.log('Arquivo CSV não encontrado.');
     return null;
   }
 
-  const conteudo = fs.readFileSync(caminho, 'utf8');
+  const conteudo = await fs.readFile(caminho, 'utf8');
   const linhas = conteudo.trim().split('\n');
   const dados = linhas.slice(1); // remove cabeçalho
 
@@ -30,8 +33,8 @@ function GgIniciaWeight(): number | null {
 }
 
 // Função que usa a anterior e imprime o resultado
-export function IniciaWeight() {
-  const valueTotal = GgIniciaWeight();
+export async function IniciaWeight() {
+  const valueTotal = await GgIniciaWeight();
 
   if (valueTotal === null) {
     console.log('A soma total dos valores é 0.');

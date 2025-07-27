@@ -1,16 +1,19 @@
-import * as fs from 'fs'; 
+import { promises as fs } from 'fs';
 import * as path from 'path';
 
 //Lista de produtos 
-function IsIniciaList():string[] | null{
-  const camih = path.join(process.cwd(),'dados','produtos.csv')
+async function IsIniciaList(): Promise<string[] | null> {
+  const camih = path.join(process.cwd(),'dados','produtos.csv');
   
-  if(!fs.existsSync(camih)){
+  try{
+    await fs.access(camih);
+  }
+  catch{
     console.log('Arquivo CSV não encontrado.');
     return null;
   }
 
-  const conteudo = fs.readFileSync(camih, 'utf8');
+  const conteudo = await fs.readFile(camih, 'utf8');
   const linhas =  conteudo.trim().split("\n");
   const dados = linhas.slice(1); 
 
@@ -27,8 +30,8 @@ function IsIniciaList():string[] | null{
 }
 
 
-export function IniciaList() {
-  const quant_itens = IsIniciaList(); 
+export async function IniciaList() {
+  const quant_itens = await IsIniciaList(); 
   if (quant_itens === null) {
     console.log('Não há produtos!');
   } else {

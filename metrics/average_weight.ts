@@ -1,16 +1,19 @@
-import * as fs from 'fs';
+import { promises as fs } from 'fs';
 import * as path from 'path';
 
 // Função que calcula a média dos pesos
-function calcularMediaPeso(): number | null {
+async function calcularMediaPeso(): Promise <number | null> {
   const caminho = path.join(process.cwd(), 'dados', 'produtos.csv');
 
-  if (!fs.existsSync(caminho)) {
+  try {
+    await fs.access(caminho);
+  }
+  catch{    
     console.log('Arquivo CSV não encontrado.');
     return null;
   }
 
-  const conteudo = fs.readFileSync(caminho, 'utf8');
+  const conteudo = await fs.readFile(caminho, 'utf8');
   const linhas = conteudo.trim().split('\n');
   const dados = linhas.slice(1); // remove cabeçalho
 
@@ -32,8 +35,8 @@ function calcularMediaPeso(): number | null {
 }
 
 // Função que usa a anterior e imprime o resultado
-export function IniciaAWeight() {
-  const media = calcularMediaPeso();
+export async function IniciaAWeight() {
+  const media = await calcularMediaPeso();
 
   if (media === null) {
     console.log('Nenhum valor encontrado para calcular a média.');

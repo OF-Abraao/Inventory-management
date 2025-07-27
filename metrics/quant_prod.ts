@@ -1,16 +1,19 @@
-import * as fs from 'fs'; 
+import { promises as fs } from 'fs';
 import * as path from 'path';
 
 //Quantidade total de produtos 
-function IsIniciaQuantProduct():number | null{
-  const camih = path.join(process.cwd(),'dados','produtos.csv')
-  
-  if(!fs.existsSync(camih)){
+async function IsIniciaQuantProduct(): Promise <number | null>{
+  const camih = path.join(process.cwd(),'dados','produtos.csv');
+
+  try{
+    await fs.access(camih)
+  }
+  catch{
     console.log('Arquivo CSV não encontrado.');
     return null;
   }
 
-  const conteudo = fs.readFileSync(camih, 'utf8');
+  const conteudo = await fs.readFile(camih, 'utf8');
   const linhas =  conteudo.trim().split("\n");
   const dados = linhas.slice(1); 
 
@@ -27,8 +30,8 @@ function IsIniciaQuantProduct():number | null{
 }
 
 
-export function IniciaQuantiProduc() {
-  const quant_itens = IsIniciaQuantProduct(); 
+export async function IniciaQuantiProduc() {
+  const quant_itens = await IsIniciaQuantProduct(); 
   if (quant_itens === null) {
     console.log('A quantidade total de produtos é 0.');
   } else {

@@ -1,15 +1,18 @@
-import * as fs from 'fs';
+import { promises as fs } from 'fs';
 import * as path from 'path';
 
-function GgIniciaValue(): number | null {
+async function GgIniciaValue(): Promise<number | null> {
   const caminho = path.join(process.cwd(), 'dados', 'produtos.csv');
 
-  if (!fs.existsSync(caminho)) {
+  try {
+    await fs.access(caminho);
+  }
+  catch{
     console.log('Arquivo CSV não encontrado.');
     return null;
   }
 
-  const conteudo = fs.readFileSync(caminho, 'utf8');
+  const conteudo = await fs.readFile(caminho, 'utf8');
   const linhas = conteudo.trim().split('\n');
   const dados = linhas.slice(1); // remove cabeçalho
 
@@ -33,8 +36,8 @@ function GgIniciaValue(): number | null {
   return soma; 
 }
 
-export function IniciaValue() {
-  const total = GgIniciaValue();
+export async function IniciaValue() {
+  const total = await GgIniciaValue();
 
   if (total === null) {
     console.log('Nenhum valor encontrado para calcular a soma.');
